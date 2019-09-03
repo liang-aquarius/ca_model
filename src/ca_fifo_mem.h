@@ -95,7 +95,6 @@ void ca_fifo_mem<id, depth, T> :: run () {
     }
 
     //////////////////updata combination output//////////////////
-
 }
 
 #endif //CA_FIFO_CA_FIFO_MEM_H

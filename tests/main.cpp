@@ -14,7 +14,6 @@ void connect_modules() {
     u_ca_fifo_top->ca_fifo_top_input_i.read_en = u_driver_monitor->driver_monitor_output_o.read_en;
     u_ca_fifo_top->ca_fifo_top_input_i.write_en = u_driver_monitor->driver_monitor_output_o.write_en;
     u_ca_fifo_top->ca_fifo_top_input_i.data_in = u_driver_monitor->driver_monitor_output_o.data_write;
-    //cout << "cycle=" << cycle << " driver_monitor_output_o.data_write=" << u_driver_monitor.driver_monitor_output_o.data_write << endl;
 
     u_driver_monitor->driver_monitor_input_i.full = u_ca_fifo_top->ca_fifo_top_output_o.full_w;
     u_driver_monitor->driver_monitor_input_i.empty = u_ca_fifo_top->ca_fifo_top_output_o.empty_w;

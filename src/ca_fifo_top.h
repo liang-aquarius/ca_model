@@ -169,5 +169,4 @@ void ca_fifo_top<id, depth, T> :: update () {
     u_ca_fifo_ctrl->update();
     u_ca_fifo_mem->update();
 }
-
 #endif //CA_FIFO_CA_FIFO_TOP_H

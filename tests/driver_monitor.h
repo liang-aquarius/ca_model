@@ -67,14 +67,11 @@ void driver_monitor<id, depth, T> :: run () {
 
     driver_monitor_output_o.data_write = cycle;
 
-
     //////////////////updata combination output//////////////////
 }
 
 
 template <uint32_t id, uint32_t depth, typename T>
-void driver_monitor<id, depth, T> :: update () {
-
-}
+void driver_monitor<id, depth, T> :: update () {}
 
 #endif //CA_FIFO_DRIVER_MONITOR_H

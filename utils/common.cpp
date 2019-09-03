@@ -10,10 +10,8 @@ ofstream vcd_file;
 bool time_record = false;
 
 void dsptime(const struct tm * ptm, ofstream &file) {
-    //char *pxq[]={"日","一","二","三","四","五","六"};
-    file << "\t" << ptm->tm_year + 1900 << "年" << ptm->tm_mon + 1 << "月" << ptm->tm_mday << "日 ";
+    file << "\t" << ptm->tm_year + 1900 << "/" << std::setw(2) << setfill('0') << ptm->tm_mon + 1 << "/" << std::setw(2) << setfill('0') << ptm->tm_mday << " ";
     file << ptm->tm_hour << ":" << ptm->tm_min << ":" << ptm->tm_sec << " " << endl;
-    //cout << " 星期" <<pxq[ptm->tm_wday] << " 当年的第" << ptm->tm_yday << "天 " << endl;
 }
 
 void begin_init_vcd_file(const string &file_name, ofstream &file){
@@ -93,7 +91,6 @@ void dump_signals(ofstream& file, vector<ca_signal> signals, bool is_input){
         uint64_t data_tmp = (*data_ptr) % ( ( (uint64_t) 1) << ((uint8_t) len) );
         uint64_t old_data_tmp =  (*old_data_ptr) % ( ( uint64_t (1)) << ((uint8_t) len) );
 
-        //vcd_file << "name= " << name << " len= " << len << " data= " << data_tmp << " old_data= " << old_data_tmp << endl;
 
         if ( data_tmp != old_data_tmp || cycle == 0) {
             int tmp_cycle = (cycle != 0 && is_input) ? cycle - 1 : cycle;

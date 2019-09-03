@@ -4,9 +4,9 @@
 #ifndef CA_FIFO_SC_MODULE_H
 #define CA_FIFO_SC_MODULE_H
 
-#ifndef __SYNTHESIS__
+//#ifndef __SYNTHESIS__
 #include "common.h"
-#endif
+//#endif
 
 class  ca_module {
 public:

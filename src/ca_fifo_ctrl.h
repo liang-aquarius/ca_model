@@ -97,7 +97,6 @@ private:
 
 template <uint32_t id, uint32_t depth, typename T>
 void ca_fifo_ctrl<id, depth, T> :: run () {
-    //cout << "DEBUT: cycle= " << cycle << " in ctrl data_in=" << ca_fifo_ctrl_input_i.db_data << endl;
 
     /////////////////////cycle n-1 combination logic/////////////////////
     empty_w = rptr_r == wptr_r;
