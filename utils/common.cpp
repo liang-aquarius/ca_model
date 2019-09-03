@@ -2,9 +2,9 @@
 // Created by chenliang on 2019/8/14.
 //
 
-//////global variables
 #include "common.h"
 
+//////global variables
 int cycle = 0;
 ofstream vcd_file;
 bool time_record = false;

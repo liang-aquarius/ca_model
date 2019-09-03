@@ -1,7 +1,6 @@
 //
 // Created by chenliang on 2019/8/14.
 //
-
 #ifndef CA_FIFO_SC_MODULE_H
 #define CA_FIFO_SC_MODULE_H
 
