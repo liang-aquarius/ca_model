@@ -20,7 +20,7 @@ void begin_init_vcd_file(const string &file_name, ofstream &file){
         time_t nowtime;
         nowtime = time(NULL);
         struct tm *local;
-        local=localtime(&nowtime);  //获取当前系统时间
+        local = localtime(&nowtime);
 
 
 
