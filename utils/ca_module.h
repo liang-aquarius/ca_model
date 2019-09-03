@@ -11,6 +11,7 @@
 
 class  ca_module {
 public:
+
     virtual void run() = 0;
     virtual void update() = 0;
 

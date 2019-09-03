@@ -8,6 +8,7 @@
 #include <stdint-gcc.h>
 #include "ca_module.h"
 
+
 template <uint32_t id, uint32_t depth, typename T>   /////n for instance id
 class ca_fifo_ctrl : ca_module {
 

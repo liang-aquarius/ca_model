@@ -8,6 +8,7 @@
 #include <stdint-gcc.h>
 #include "ca_module.h"
 
+
 template <uint32_t id, uint32_t depth, typename T>
 class driver_monitor : ca_module {
     //////////define output struct/////////////////
