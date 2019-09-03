@@ -3,7 +3,7 @@ project(ca_fifo)
 
 set(CMAKE_CXX_STANDARD 14)
 
-include_directories(utils)
-include_directories(src)
+include_directories(libs)
+include_directories(designs)
 
-add_executable(ca_fifo tests/main.cpp utils/ca_module.h src/ca_fifo_ctrl.h src/ca_fifo_mem.h utils/common.cpp utils/common.h src/ca_fifo_top.h tests/driver_monitor.h)
+add_executable(ca_fifo tests/ca_fifo/main.cpp libs/ca_module.h designs/ca_fifo/ca_fifo_ctrl.h designs/ca_fifo/ca_fifo_mem.h libs/common.cpp libs/common.h designs/ca_fifo/ca_fifo_top.h tests/ca_fifo/driver_monitor.h)

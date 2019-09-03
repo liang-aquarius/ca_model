@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "ca_fifo_top.h"
+#include "ca_fifo/ca_fifo_top.h"
 #include "driver_monitor.h"
 
 ca_fifo_top<0,1024,uint32_t> * u_ca_fifo_top;
