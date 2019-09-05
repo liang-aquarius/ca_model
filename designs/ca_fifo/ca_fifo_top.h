@@ -30,10 +30,9 @@ class ca_fifo_top : ca_module {
 public:
     /////////////////constructors//////////////
     ca_fifo_top() : trace(false) {
-        u_ca_fifo_ctrl = new ca_fifo_ctrl<id, depth, T>(0);
-        u_ca_fifo_mem = new ca_fifo_mem<id, depth, T>(0);
+        u_ca_fifo_ctrl = new ca_fifo_ctrl<id, depth, T>(false);
+        u_ca_fifo_mem = new ca_fifo_mem<id, depth, T>(false);
     }
-
     explicit ca_fifo_top (bool trace_value){
         trace = trace_value;
         if (trace_value) {    ////////////add signals for dump wave/////////////
@@ -101,6 +100,7 @@ void ca_fifo_top<id, depth, T> ::connect_submod(){
     u_ca_fifo_ctrl->ca_fifo_ctrl_input_i.write_en = ca_fifo_top_input_i.write_en;
     u_ca_fifo_ctrl->ca_fifo_ctrl_input_i.read_en = ca_fifo_top_input_i.read_en;
     u_ca_fifo_ctrl->ca_fifo_ctrl_input_i.q_data = u_ca_fifo_mem->ca_fifo_mem_output_o.q_data;
+
     u_ca_fifo_ctrl->connect_submod();
     u_ca_fifo_mem->connect_submod();
 }

@@ -63,11 +63,12 @@ public:
     ca_fifo_ctrl_output ca_fifo_ctrl_output_o;
 
     //////////////////interface functions///////////////////
-    bool is_trace() override {return trace;}
-    void run() override;
-    void dump_sigs(ofstream &file) override;
-    void update() override;
     void connect_submod() override {};
+    void run() override;
+    void update() override;
+
+    bool is_trace() override {return trace;}
+    void dump_sigs(ofstream &file) override;
 
     ///////////////local variables, _r for regs and _w for wires////////////////
 private:

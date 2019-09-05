@@ -11,13 +11,14 @@
 class  ca_module {
 public:
 
+    virtual void connect_submod() = 0;
     virtual void run() = 0;
     virtual void update() = 0;
 
     virtual bool is_trace() = 0;
     virtual void dump_sigs(ofstream &file) = 0;
     //virtual void dump_inputs(ofstream &file) = 0;
-    virtual void connect_submod() = 0;
+
 
 };
 #endif //CA_FIFO_SC_MODULE_H
