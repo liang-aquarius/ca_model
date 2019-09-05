@@ -44,17 +44,17 @@ public:
             signals.emplace_back(ca_signal(&rptr_r, &rptr_old, 13, "rptr_r"));
             signals.emplace_back(ca_signal(&wptr_r, &wptr_old, 13, "wptr_r"));
 
-            inputs.emplace_back(ca_signal(&ca_fifo_ctrl_input_i.read_en, &ca_fifo_ctrl_input_old.read_en, 1, "read_en_i"));
-            inputs.emplace_back(ca_signal(&ca_fifo_ctrl_input_i.write_en, &ca_fifo_ctrl_input_old.write_en, 1, "write_en_i"));
-            inputs.emplace_back(ca_signal(&ca_fifo_ctrl_input_i.reset_n, &ca_fifo_ctrl_input_old.reset_n, 1, "reset_n"));
+            signals.emplace_back(ca_signal(&ca_fifo_ctrl_input_i.read_en, &ca_fifo_ctrl_input_old.read_en, 1, "read_en_i"));
+            signals.emplace_back(ca_signal(&ca_fifo_ctrl_input_i.write_en, &ca_fifo_ctrl_input_old.write_en, 1, "write_en_i"));
+            signals.emplace_back(ca_signal(&ca_fifo_ctrl_input_i.reset_n, &ca_fifo_ctrl_input_old.reset_n, 1, "reset_n"));
 
-            inputs.emplace_back(ca_signal(&ca_fifo_ctrl_input_i.db_data, &ca_fifo_ctrl_input_old.db_data, 32, "db_data_in"));
+            signals.emplace_back(ca_signal(&ca_fifo_ctrl_input_i.db_data, &ca_fifo_ctrl_input_old.db_data, 32, "db_data_in"));
 
 
             signals.emplace_back(ca_signal(&ca_fifo_ctrl_output_o.db_data, &ca_fifo_ctrl_output_old.db_data, 32, "db_data_out"));
             signals.emplace_back(ca_signal(&ca_fifo_ctrl_output_o.data_valid_r, &ca_fifo_ctrl_output_old.data_valid_r, 1, "data_valid_r"));
             signals.emplace_back(ca_signal(&ca_fifo_ctrl_output_o.data_out_r, &ca_fifo_ctrl_output_old.data_out_r, 32, "data_out_r"));
-            begin_init_signals(vcd_file, "ca_fifo_ctrl", signals, inputs);
+            begin_init_signals(vcd_file, "ca_fifo_ctrl", signals);
             end_init_signals(vcd_file);
         }
     }
@@ -66,8 +66,8 @@ public:
     bool is_trace() override {return trace;}
     void run() override;
     void dump_sigs(ofstream &file) override;
-    void dump_inputs(ofstream &file) override;
     void update() override;
+    void connect_submod() override {};
 
     ///////////////local variables, _r for regs and _w for wires////////////////
 private:
@@ -92,7 +92,6 @@ private:
     ///////////////local variables for dump vcd///////////////
     bool trace;
     vector<ca_signal> signals;
-    vector<ca_signal> inputs;
 };
 
 template <uint32_t id, uint32_t depth, typename T>
@@ -174,21 +173,11 @@ void ca_fifo_ctrl<id, depth, T> :: run () {
 template <uint32_t id, uint32_t depth, typename T>
 void ca_fifo_ctrl<id, depth, T> ::dump_sigs(ofstream &file){
     if (is_trace()) {
-        dump_signals(file, signals, false);
+        dump_signals(file, signals);
     } else {
         cout << "Warning: trace is disabled" << endl;
     }
 }
-
-template <uint32_t id, uint32_t depth, typename T>
-void ca_fifo_ctrl<id, depth, T> ::dump_inputs(ofstream &file){
-    if (is_trace()) {
-        dump_signals(file, inputs, true);
-    } else {
-        cout << "Warning: trace is disabled" << endl;
-    }
-}
-
 template <uint32_t id, uint32_t depth, typename T>
 void ca_fifo_ctrl<id, depth, T> :: update () {
     full_w_old = full_w;

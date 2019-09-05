@@ -16,7 +16,8 @@ public:
 
     virtual bool is_trace() = 0;
     virtual void dump_sigs(ofstream &file) = 0;
-    virtual void dump_inputs(ofstream &file) = 0;
+    //virtual void dump_inputs(ofstream &file) = 0;
+    virtual void connect_submod() = 0;
 
 };
 #endif //CA_FIFO_SC_MODULE_H

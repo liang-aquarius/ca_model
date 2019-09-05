@@ -43,13 +43,10 @@ void begin_init_vcd_file(const string &file_name, ofstream &file){
         exit(1);
     }
 }
-void begin_init_signals(ofstream &file, const string &module_name, vector<ca_signal> signals, vector<ca_signal> inputs){
+void begin_init_signals(ofstream &file, const string &module_name, vector<ca_signal> signals){
     if (file.is_open()) {
         file << endl << "$scope module " << module_name << " $end" << endl;
-        for (auto iter = inputs.cbegin(); iter != inputs.cend(); iter++) {
-            file << "$var reg\t" << (int) ((*iter).len) << "\t" << (*iter).name << "\t\t" << (*iter).name << "\t\t"
-            << "$end" << endl;
-        }
+
         for (auto iter = signals.cbegin(); iter != signals.cend(); iter++) {
             file << "$var reg\t" << (int) ((*iter).len) << "\t" << (*iter).name << "\t\t" << (*iter).name << "\t\t"
                  << "$end" << endl;
@@ -80,8 +77,7 @@ void end_init_vcd_file(ofstream &file) {
     }
 }
 
-void dump_signals(ofstream& file, vector<ca_signal> signals, bool is_input){
-    //time_record=false;
+void dump_signals(ofstream& file, vector<ca_signal> signals){
     for (auto iter = signals.cbegin(); iter != signals.cend(); iter++) {
         int len = (*iter).len;
         string name = (*iter).name;
@@ -93,9 +89,8 @@ void dump_signals(ofstream& file, vector<ca_signal> signals, bool is_input){
 
 
         if ( data_tmp != old_data_tmp || cycle == 0) {
-            int tmp_cycle = (cycle != 0 && is_input) ? cycle - 1 : cycle;
             if (!time_record)
-                file << "#" << tmp_cycle << endl;
+                file << "#" << cycle << endl;
 
             file << "b";
             if (len == 0) {

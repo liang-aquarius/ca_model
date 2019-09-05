@@ -29,7 +29,7 @@ class ca_fifo_top : ca_module {
 
 public:
     /////////////////constructors//////////////
-    ca_fifo_top() : trace(0) {
+    ca_fifo_top() : trace(false) {
         u_ca_fifo_ctrl = new ca_fifo_ctrl<id, depth, T>(0);
         u_ca_fifo_mem = new ca_fifo_mem<id, depth, T>(0);
     }
@@ -37,10 +37,10 @@ public:
     explicit ca_fifo_top (bool trace_value){
         trace = trace_value;
         if (trace_value) {    ////////////add signals for dump wave/////////////
-            inputs.emplace_back(ca_signal(&ca_fifo_top_input_i.read_en, &ca_fifo_top_input_old.read_en, 1, "read_en_i"));
-            inputs.emplace_back(ca_signal(&ca_fifo_top_input_i.write_en, &ca_fifo_top_input_old.write_en, 1, "write_en_i"));
-            inputs.emplace_back(ca_signal(&ca_fifo_top_input_i.reset_n, &ca_fifo_top_input_old.reset_n, 1, "reset_n"));
-            inputs.emplace_back(ca_signal(&ca_fifo_top_input_i.data_in, &ca_fifo_top_input_old.data_in, 32, "data_in"));
+            signals.emplace_back(ca_signal(&ca_fifo_top_input_i.read_en, &ca_fifo_top_input_old.read_en, 1, "read_en_i"));
+            signals.emplace_back(ca_signal(&ca_fifo_top_input_i.write_en, &ca_fifo_top_input_old.write_en, 1, "write_en_i"));
+            signals.emplace_back(ca_signal(&ca_fifo_top_input_i.reset_n, &ca_fifo_top_input_old.reset_n, 1, "reset_n"));
+            signals.emplace_back(ca_signal(&ca_fifo_top_input_i.data_in, &ca_fifo_top_input_old.data_in, 32, "data_in"));
 
             signals.emplace_back(ca_signal(&ca_fifo_top_output_o.empty_w, &ca_fifo_top_output_old.empty_w, 1, "empty_w"));
             signals.emplace_back(ca_signal(&ca_fifo_top_output_o.full_w, &ca_fifo_top_output_old.full_w, 1, "full_w"));
@@ -49,7 +49,7 @@ public:
 
 
             /////////////////////add sub module signals///////////////////////////
-            begin_init_signals(vcd_file, "ca_fifo_top", signals, inputs);
+            begin_init_signals(vcd_file, "ca_fifo_top", signals);
             u_ca_fifo_ctrl = new ca_fifo_ctrl<id, depth, T>(trace_value);
             u_ca_fifo_mem = new ca_fifo_mem<id, depth, T>(trace_value);
             end_init_signals(vcd_file);
@@ -66,8 +66,9 @@ public:
     bool is_trace() override {return trace;}
     void run() override;
     void dump_sigs(ofstream &file) override;
-    void dump_inputs(ofstream &file) override;
+    //void dump_inputs(ofstream &file) override;
     void update() override;
+    void connect_submod() override;
 
 private:
     //////////////////sub modules/////////////
@@ -82,9 +83,6 @@ private:
     ///////////////local variables for dump vcd///////////////
     bool trace;
     vector<ca_signal> signals;
-    vector<ca_signal> inputs;
-
-    void connect_submod();
 };
 
 
@@ -103,13 +101,12 @@ void ca_fifo_top<id, depth, T> ::connect_submod(){
     u_ca_fifo_ctrl->ca_fifo_ctrl_input_i.write_en = ca_fifo_top_input_i.write_en;
     u_ca_fifo_ctrl->ca_fifo_ctrl_input_i.read_en = ca_fifo_top_input_i.read_en;
     u_ca_fifo_ctrl->ca_fifo_ctrl_input_i.q_data = u_ca_fifo_mem->ca_fifo_mem_output_o.q_data;
+    u_ca_fifo_ctrl->connect_submod();
+    u_ca_fifo_mem->connect_submod();
 }
 
 template <uint32_t id, uint32_t depth, typename T>
 void ca_fifo_top<id, depth, T> :: run () {
-    connect_submod();
-
-    //cout << "DEBUG: cycle= " << cycle << "top data in= " << ca_fifo_top_input_i.data_in << endl;
     /////////////////////combination logic/////////////////////
 
 
@@ -127,29 +124,12 @@ void ca_fifo_top<id, depth, T> :: run () {
     ca_fifo_top_output_o.full_w = u_ca_fifo_ctrl->ca_fifo_ctrl_output_o.full_w;
     ca_fifo_top_output_o.data_out_w = u_ca_fifo_ctrl->ca_fifo_ctrl_output_o.data_out_r;
     ca_fifo_top_output_o.data_valid_w = u_ca_fifo_ctrl->ca_fifo_ctrl_output_o.data_valid_r;
-    //connect_submod();
-}
-
-template <uint32_t id, uint32_t depth, typename T>
-void ca_fifo_top<id, depth, T> :: dump_inputs(ofstream& file){
-    if (is_trace()) {
-        dump_signals(file, inputs, true);
-    } else {
-        cout << "Warning: trace is disabled in ca_fifo_top, id: " << id << endl;
-    }
-
-    if (u_ca_fifo_ctrl->is_trace()) {
-        u_ca_fifo_ctrl->dump_inputs(vcd_file);
-    }
-    if (u_ca_fifo_mem->is_trace()) {
-        u_ca_fifo_mem->dump_inputs(vcd_file);
-    }
 }
 
 template <uint32_t id, uint32_t depth, typename T>
 void ca_fifo_top<id, depth, T> :: dump_sigs(ofstream &file){
     if (is_trace()) {
-        dump_signals(file, signals, false);
+        dump_signals(file, signals);
     } else {
         cout << "Warning: trace is disabled in ca_fifo_top, id: " << id << endl;
     }

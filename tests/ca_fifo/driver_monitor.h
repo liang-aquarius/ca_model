@@ -37,7 +37,7 @@ public:
     bool is_trace() override {}
     void run() override;
     void dump_sigs(ofstream &file) override {};
-    void dump_inputs(ofstream &file) override {};
+    void connect_submod() override {};
     void update() override ;
 };
 template <uint32_t id, uint32_t depth, typename T>

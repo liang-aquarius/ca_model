@@ -19,6 +19,9 @@ void connect_modules() {
     u_driver_monitor->driver_monitor_input_i.empty = u_ca_fifo_top->ca_fifo_top_output_o.empty_w;
     u_driver_monitor->driver_monitor_input_i.data_valid = u_ca_fifo_top->ca_fifo_top_output_o.data_valid_w;
     u_driver_monitor->driver_monitor_input_i.data_out = u_ca_fifo_top->ca_fifo_top_output_o.data_out_w;
+
+    u_ca_fifo_top->connect_submod();
+    u_driver_monitor->connect_submod();
 }
 
 int main() {
@@ -33,17 +36,10 @@ int main() {
 
     for(int i=0; i< num_cycles; i++){
         //////////////////combinational logic & connect modules/////////////////
-
         connect_modules();
-        /////////////////////////sequential logic/////////////////
-        u_ca_fifo_top->run();
-        u_driver_monitor->run();
 
         /////////////////////////////dump vcd file /////////////////////////
         if (u_ca_fifo_top->is_trace()) {
-            u_ca_fifo_top->dump_inputs(vcd_file);
-            time_record = false;
-
             u_ca_fifo_top->dump_sigs(vcd_file);
             time_record = false;
         }
@@ -52,6 +48,11 @@ int main() {
         u_ca_fifo_top->update();
         u_driver_monitor->update();
 
+        /////////////////////////sequential logic/////////////////
         cycle++;
+
+        u_ca_fifo_top->run();
+        u_driver_monitor->run();
+
     }
 }
